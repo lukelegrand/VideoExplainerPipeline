@@ -1,0 +1,23 @@
+services:
+  video-pipeline:
+    build: .
+    container_name: auto_explainer_container
+    ports:
+      - "7860:7860"
+    volumes:
+      # 1. Persist the Output (Videos/CSVs) to your local folder
+      - ./pipeline_output:/app/pipeline_output
+
+      # 2. Persist the AI Models (So you don't re-download 15GB every time)
+      - ./hf_cache:/root/.cache/huggingface
+
+    # 3. GPU Support (Optional - Uncomment if you have an NVIDIA GPU)
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: 1
+    #           capabilities: [gpu]
+
+    restart: unless-stopped
